@@ -3,15 +3,17 @@
 BAT=$(echo /sys/class/power_supply/BAT*)
 BAT_STATUS="$BAT/status"
 BAT_CAP="$BAT/capacity"
-LOW_BAT_PERCENT=20
-BAT_CHG_LIMIT=80
 
-AC_PROFILE="performance"
-BAT_PROFILE="power-saver"
-LOW_BAT_PROFILE="power-saver"
+# configure your preferences
+LOW_BAT_PERCENT=20              # recommended between 10 and 30
+BAT_CHG_LIMIT=80                # use 100, unless you've configured a battery charge limit
 
-LOW_REFRESH_RATE=60
-HIGH_REFRESH_RATE=120
+AC_PROFILE="performance"        # "performance" or "balanced"
+BAT_PROFILE="power-saver"       # "balanced" or "power-saver"
+LOW_BAT_PROFILE="power-saver"   # "balanced" or "power-saver"
+
+LOW_REFRESH_RATE=60             # decimal (check your display supports it)
+HIGH_REFRESH_RATE=120           # decimal (check your display supports it)
 
 # wait a while if needed
 [[ -z $STARTUP_WAIT ]] || sleep "$STARTUP_WAIT"
