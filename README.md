@@ -18,7 +18,7 @@ When you plug it back in:
 
 You can adjust all of these settings by configuring the variables in `~/.local/bin/power-monitor.sh`
 
-```
+```bash
 # configure your preferences
 LOW_BAT_PERCENT=20              # recommended between 10 and 30
 BAT_CHG_LIMIT=80                # use 100, unless you've configured a battery charge limit
