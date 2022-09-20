@@ -45,3 +45,26 @@ Copy the two files to their respective folders then make the script executable:
 
 Start the service:
 `systemctl --user enable --now power-monitor.service`
+
+## Using
+
+Simply unplug your laptop. There are a few scenarios when you unplug:
+1. If the battery is near the charge limit, nothing will happen
+2. Once the battery falls a few % below the charge limit, it will switch to Power Saver, reduce the refresh rate, and reset fan curves.
+
+When you plug back in:
+1. It will switch to Performance (or whatever you chose), increase screen refresh rate, and reset fans.
+
+You can get status of the service with:
+`systemctl --user status power-monitor.service`
+
+Or restart the service with:
+`systemctl --user restart power-monitor.service`
+
+## Uninstalling
+
+```bash
+systemctl --user disable power-monitor.service
+dnf remove gnome-monitor-config inotify-tools
+rm ~/.local/bin/power-monitor.sh ~/.config/systemd/user/power-monitor.service
+```
