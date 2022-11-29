@@ -12,6 +12,7 @@ AC_PROFILE="performance"        # "performance" or "balanced"
 BAT_PROFILE="power-saver"       # "balanced" or "power-saver"
 LOW_BAT_PROFILE="power-saver"   # "balanced" or "power-saver"
 
+CHANGE_REFRESH="False"
 LOW_REFRESH_RATE=60             # decimal (check your display supports it)
 HIGH_REFRESH_RATE=120           # decimal (check your display supports it)
 
@@ -55,9 +56,11 @@ while true; do
                 	asusctl fan-curve -m "balanced" -f cpu -D "20c:0%,40c:0%,50c:0%,60c:5%,70c:15%,80c:40%,90c:70%,100c:80%"
 	                asusctl fan-curve -m "balanced" -f gpu -D "20c:0%,40c:0%,50c:0%,60c:5%,70c:15%,80c:40%,90c:70%,100c:80%"
 
-			# set internal display refresh rate
-			echo Setting refresh rate to $refresh Hz.
-			gnome-monitor-config set -Lp -M eDP-2 -m 2560x1600@$refresh &>/dev/null
+			if [[ CHANGE_REFRESH == "True" ]]; then
+				# set internal display refresh rate
+				echo Setting refresh rate to $refresh Hz.
+				gnome-monitor-config set -Lp -M eDP-2 -m 2560x1600@$refresh &>/dev/null
+			fi
 		fi
 
 		prev=$profile
