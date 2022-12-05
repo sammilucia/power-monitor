@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env bash
 
 BAT=$(echo /sys/class/power_supply/BAT*)
 BAT_STATUS="$BAT/status"
