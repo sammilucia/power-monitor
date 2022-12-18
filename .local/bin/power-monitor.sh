@@ -6,21 +6,22 @@ BAT_CAP="$BAT/capacity"
 
 # configure your preferences
 LOW_BAT_PERCENT=20              # recommended between 10 and 30
-BAT_CHG_LIMIT=80                # use 100, unless you've configured a battery charge limit
+BAT_CHG_LIMIT=70                # use 100, unless you've configured a battery charge limit
 
 AC_PROFILE="performance"        # "performance" or "balanced"
 BAT_PROFILE="power-saver"       # "balanced" or "power-saver"
 LOW_BAT_PROFILE="power-saver"   # "balanced" or "power-saver"
 
-CHANGE_REFRESH="False"
-LOW_REFRESH_RATE=60             # decimal (check your display supports it)
-HIGH_REFRESH_RATE=120           # decimal (check your display supports it)
+CHANGE_REFRESH="True"
+MONITOR_NAME="eDP-1"		# Use `gnome-monitor-config list` to find
+LOW_REFRESH_RATE="59.987"       # must be precise
+HIGH_REFRESH_RATE="165.040"     # must be precise
 
 # wait a while if needed
 [[ -z $STARTUP_WAIT ]] || sleep "$STARTUP_WAIT"
 
 # add error margin to the charge limit
-chargeLimit=$BAT_CHG_LIMIT-2
+chargeLimit=$BAT_CHG_LIMIT-1
 
 # start the monitor loop
 prev=0
@@ -35,13 +36,16 @@ while true; do
                 	if [[ $(cat "$BAT_CAP") -gt $LOW_BAT_PERCENT ]]; then
                         	profile=$BAT_PROFILE
 				refresh=$LOW_REFRESH_RATE
+				fans="Quiet"
         	        else
                 	    	profile=$LOW_BAT_PROFILE
 				refresh=$LOW_REFRESH_RATE
+				fans="Quiet"
 	                fi
         	else
             		profile=$AC_PROFILE
 			refresh=$HIGH_REFRESH_RATE
+			fans="Performance"
         	fi
 
 	        # if the profile is different
@@ -51,15 +55,14 @@ while true; do
 	                echo Switching to $profile\.
         	        powerprofilesctl set $profile
 
-	                # reset the fan curves
-			echo Resetting fans.
-                	asusctl fan-curve -m "balanced" -f cpu -D "20c:0%,40c:0%,50c:0%,60c:5%,70c:15%,80c:40%,90c:70%,100c:80%"
-	                asusctl fan-curve -m "balanced" -f gpu -D "20c:0%,40c:0%,50c:0%,60c:5%,70c:15%,80c:40%,90c:70%,100c:80%"
+	                # set fan curves
+			echo Setting fan mode to $fans.
+                	asusctl profile -P $fans
 
-			if [[ CHANGE_REFRESH == "True" ]]; then
+			if [[ $CHANGE_REFRESH == "True" ]]; then
 				# set internal display refresh rate
 				echo Setting refresh rate to $refresh Hz.
-				gnome-monitor-config set -Lp -M eDP-2 -m 2560x1600@$refresh &>/dev/null
+				gnome-monitor-config set -Lp -M $MONITOR_NAME -m 2560x1600@$refresh
 			fi
 		fi
 
