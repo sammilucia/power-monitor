@@ -5,17 +5,17 @@ BAT_STATUS="$BAT/status"
 BAT_CAP="$BAT/capacity"
 
 # configure your preferences
-LOW_BAT_PERCENT=20              # recommended between 10 and 30
-BAT_CHG_LIMIT=70                # use 100, unless you've configured a battery charge limit
+LOW_BAT_PERCENT=20                       # recommended between 10 and 30
+BAT_CHG_LIMIT=80                         # use 100, unless you've configured a battery charge limit
 
-AC_PROFILE="performance"        # "performance" or "balanced"
-BAT_PROFILE="power-saver"       # "balanced" or "power-saver"
-LOW_BAT_PROFILE="power-saver"   # "balanced" or "power-saver"
+AC_PROFILE="performance"                 # "performance" or "balanced"
+BAT_PROFILE="power-saver"                # "balanced" or "power-saver"
+LOW_BAT_PROFILE="power-saver"            # "balanced" or "power-saver"
 
 CHANGE_REFRESH="True"
-MONITOR_NAME="eDP-1"		# Use `gnome-monitor-config list` to find
-LOW_REFRESH_RATE="59.987"       # must be precise
-HIGH_REFRESH_RATE="165.040"     # must be precise
+MONITOR_NAME="eDP-1"                     # Use `gnome-monitor-config list` to find
+LOW_MODE="2560x1600@60.029209136962891"  # must be precise. use `gnome-monitor-config list` to find
+HIGH_MODE="2560x1600@165.03999328613281" # must be precise
 
 # wait a while if needed
 [[ -z $STARTUP_WAIT ]] || sleep "$STARTUP_WAIT"
@@ -35,16 +35,16 @@ while true; do
         	if [[ $(cat "$BAT_STATUS") == "Discharging" ]]; then
                 	if [[ $(cat "$BAT_CAP") -gt $LOW_BAT_PERCENT ]]; then
                         	profile=$BAT_PROFILE
-				refresh=$LOW_REFRESH_RATE
+				new_mode=$LOW_MODE
 				fans="Quiet"
         	        else
                 	    	profile=$LOW_BAT_PROFILE
-				refresh=$LOW_REFRESH_RATE
+				new_mode=$LOW_MODE
 				fans="Quiet"
 	                fi
         	else
             		profile=$AC_PROFILE
-			refresh=$HIGH_REFRESH_RATE
+			new_mode=$HIGH_MODE
 			fans="Performance"
         	fi
 
@@ -61,8 +61,8 @@ while true; do
 
 			if [[ $CHANGE_REFRESH == "True" ]]; then
 				# set internal display refresh rate
-				echo Setting refresh rate to $refresh Hz.
-				gnome-monitor-config set -Lp -M $MONITOR_NAME -m 2560x1600@$refresh
+				echo Setting display to $new_mode
+				gnome-monitor-config set -Lp -M $MONITOR_NAME -m $new_mode
 			fi
 		fi
 

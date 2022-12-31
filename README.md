@@ -46,7 +46,7 @@ Copy the two files to their respective folders then make the script executable:
 ```bash
 git clone https://github.com/sammilucia/power-monitor
 cd power-monitor
-cp .local/bin/power-monitor.sh ~/.local/bin/
+cp .local/bin/power-monitor.sh ~/.local/bin/      # or to ~/.local/sbin/ if you prefer
 cp .config/systemd/user/power-monitor.service ~/.config/systemd/user/
 chmod +x ~/.local/bin/power-monitor.sh
 ```
