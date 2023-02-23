@@ -51,13 +51,13 @@ cp .config/systemd/user/power-monitor.service ~/.config/systemd/user/
 chmod +x ~/.local/bin/power-monitor.sh
 ```
 
-Configure your preferences in `~/.local/bin/power-monitor.sh` per the instructions.
+The rest of the instructions are inside the `~/.local/bin/power-monitor.sh` file. You will need to edit it per the instructions in there (to add your specific refresh rate and decide your preferences).
 
 Start the service:
 
 `systemctl --user enable --now power-monitor.service`
 
-## Using
+## Testing and using
 
 To use simply unplug your laptop. There are a few scenarios when you unplug:
 1. If the battery is within 1% of the charge limit (by default), nothing will happen
